@@ -16,10 +16,14 @@ kubectl config current-context
 # view all config of kubectl
 kubectl config view
 
+# get all context: each context equivalent to 1 cluster
+kubectl config get-contexts
+
+# delete context
+kubectl config get-contexts
+
 # delete eks cluster
 eksctl delete cluster --name workspace-cluster --region us-east-1
 
 # get namespace of cluster
 kubectl get namespace
-
-
