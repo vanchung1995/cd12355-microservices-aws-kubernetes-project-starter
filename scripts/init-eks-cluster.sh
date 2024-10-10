@@ -20,7 +20,7 @@ kubectl config view
 kubectl config get-contexts
 
 # delete context
-kubectl config get-contexts
+kubectl config delete-context NAME
 
 # delete eks cluster
 eksctl delete cluster --name workspace-cluster --region us-east-1
