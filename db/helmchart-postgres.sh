@@ -8,12 +8,12 @@ kubectl get cm
 kubectl create configmap initdbscripts --from-file=./1_create_tables.sql --from-file=./2_seed_users.sql --from-file=./3_seed_tokens.sql
 
 # install postgress
-# helm install --set primary.initdb.scriptsConfigMap=initdbscripts --set primary.persistence.enabled=false  postgres-udacity oci://registry-1.docker.io/bitnamicharts/postgresql
+# helm install --set primary.initdb.scriptsConfigMap=initdbscripts --set primary.persistence.enabled=false --set auth.database=udagram --set auth.username=postgres --set auth.password=mypassword postgres-udacity oci://registry-1.docker.io/bitnamicharts/postgresql
 
 helm install --set primary.initdb.scriptsConfigMap=initdbscripts \
-             --set global.postgresql.auth.database=udagram \
-             --set global.postgresql.auth.username=postgres \
-             --set global.postgresql.auth.password=mypassword \
+             --set auth.database=udagram \
+             --set auth.username=postgres \
+             --set auth.password=mypassword \
              --set primary.persistence.existingClaim=postgresql-pvc \
              --set volumePermissions.enabled=true \
              postgres-udacity oci://registry-1.docker.io/bitnamicharts/postgresql
