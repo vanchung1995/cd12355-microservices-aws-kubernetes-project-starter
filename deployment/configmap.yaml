@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: <NAME OF THE ConfigMap>
+  name: db-info
 data:
-  DB_NAME: <ENTER YOUR DB NAME HERE>
-  DB_USER: <ENTER YOUR USER NAME HERE>
-  DB_HOST: <ENTER YOUR DB HOST HERE>
-  DB_PORT: <ENTER YOUR DB PORT HERE>
+  DB_NAME: udagram
+  DB_USER: postgres
+  DB_HOST: a2d75b6844a4346d1870e08b4a5672d8-270586668.us-east-1.elb.amazonaws.com
+  DB_PORT: 5432
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: <NAME OF THE Secret>
+  name: db-password
 type: Opaque
 data:
-  <THE KEY FROM Secret WHICH has THE ENCODED PASSWORD>: <OUTPUT OF `echo -n 'the password' | base64`>
+  ENCODED_PASSWORD: <OUTPUT OF `echo -n 'the password' | base64`>
