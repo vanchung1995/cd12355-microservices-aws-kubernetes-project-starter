@@ -10,18 +10,10 @@ kubectl create configmap initdbscripts --from-file=./1_create_tables.sql --from-
 # install postgress
 # helm install --set primary.initdb.scriptsConfigMap=initdbscripts --set primary.persistence.enabled=false  postgres-udacity oci://registry-1.docker.io/bitnamicharts/postgresql
 
-helm install    --set primary.initdb.scriptsConfigMap=initdbscripts \
-                --set primary.persistence.existingClaim=postgresql-pvc \
-                --set volumePermissions.enabled=true \
-                --set primary.persistence.enabled=false \
-                --set primary.persistence.mountPath=/bitnami/postgresql/data \
-                postgres-udacity oci://registry-1.docker.io/bitnamicharts/postgresql
-
 helm install --set primary.initdb.scriptsConfigMap=initdbscripts \
              --set primary.persistence.existingClaim=postgresql-pvc \
              --set volumePermissions.enabled=true \
              postgres-udacity oci://registry-1.docker.io/bitnamicharts/postgresql
-
 
 # uninstall postgres
 helm uninstall postgres-udacity
