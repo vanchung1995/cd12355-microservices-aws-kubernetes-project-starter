@@ -153,7 +153,7 @@ Please provide up to 3 sentences for each suggestion. Additional content in your
 
 5. Create ecr repository named: chungvv3/coworking
 
-6. Create CodeBuild for CI project
+6. Create CodeBuild for CI project and trigger automaticlly
 
 Add permission to push docker image to ecr:
 
