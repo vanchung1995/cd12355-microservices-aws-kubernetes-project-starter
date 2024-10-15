@@ -4,7 +4,7 @@ metadata:
   name: db-info
 data:
   DB_NAME: udagram
-  DB_USER: postgres
+  DB_USERNAME: postgres
   DB_HOST: postgres-udacity-postgresql
   DB_PORT: 5432
 ---
