@@ -129,3 +129,59 @@ Please provide up to 3 sentences for each suggestion. Additional content in your
 ### Best Practices
 * Dockerfile uses an appropriate base image for the application being deployed. Complex commands in the Dockerfile include a comment describing what it is doing.
 * The Docker images use semantic versioning with three numbers separated by dots, e.g. `1.2.1` and  versioning is visible in the  screenshot. See [Semantic Versioning](https://semver.org/) for more details.
+
+### Instructions
+1. Chmod to install dependencies:
+   `chmod 755 ./scripts/*`
+   
+2. Install eks and helm
+   `./scripts/install-eksctl.sh && ./scripts/install-helm.sh`
+   
+3. Init cluster eks
+   
+   `eksctl create cluster --name workspace-cluster --region us-east-1 --nodegroup-name workspace-nodegroup --node-type t3.small --nodes 1 --nodes-min 1 --nodes-max 2`
+
+    Update context: `aws eks --region us-east-1 update-kubeconfig --name workspace-cluster`
+   
+5. Create configmap contains sqls for helmchart and install postgresql by helm:
+
+    `cd  ./db && kubectl create configmap initdbscripts --from-file=./1_create_tables.sql --from-file=./2_seed_users.sql --from-file=./3_seed_tokens.sql`
+
+    Then
+
+    `helm install --set primary.initdb.scriptsConfigMap=initdbscripts --set primary.persistence.enabled=false --set auth.database=udagram --set         auth.username=postgres --set auth.password=mypassword postgres-udacity oci://registry-1.docker.io/bitnamicharts/postgresql`
+
+5. Create ecr repository named: chungvv3/coworking
+
+6. Create CodeBuild for CI project
+
+Add permission to push docker image to ecr:
+
+    ```
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "ecr:*"
+                ],
+                "Resource": [
+                    "*"
+                ]
+            }
+        ]
+    }
+    ```
+
+7. Create configmap, secret for environment db 
+
+    `cd deployment && kubectl apply -f configmap.yaml && kubectl apply -f coworking.yaml`
+
+8. Add logging:
+
+Add policy to worker node role 
+
+    `aws iam attach-role-policy --role-name eksctl-workspace-cluster-nodegroup-NodeInstanceRole-T3n2G7yE6fMr --policy-arn     arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy`
+
+Add addon:  `aws eks create-addon --addon-name amazon-cloudwatch-observability --cluster-name workspace-cluster`
